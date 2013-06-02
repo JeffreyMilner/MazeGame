@@ -12,10 +12,17 @@ public class Maze {
 	public static int width;
 	public static int height;
 	public static JFrame frame = new JFrame();
+
+	public static int numOfSizes = 5;
 	
 	public Maze() {
-		sizeChecker();
+//		sizeChecker();
 //		chooser();
+		SizeChooser gui = new SizeChooser();
+		gui.pack();
+	}
+	
+	public static void afterChoose() {
 		mapDir = "maps/size" + gridSize;
 		getRandMap();
 		width = gridSize * 32 + 16; // Makes it so the tiles fit the best
@@ -36,7 +43,7 @@ public class Maze {
 		}
 	}
 	
-	public void getRandMap() {
+	public static void getRandMap() {
 		String path = mapDir; 
 
 		File directory = new File(path);
