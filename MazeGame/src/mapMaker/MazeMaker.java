@@ -7,7 +7,7 @@ import javax.swing.*;
 
 public class MazeMaker {
 	public static int gridSize = 19;
-	public static String mapName = ""; //"maps/Map" + gridSize + ".txt";
+	public static String mapName = "";
 	public static int width, height;
 	public static int newMap;
 	
