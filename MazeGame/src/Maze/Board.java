@@ -65,6 +65,9 @@ public class Board extends JPanel implements ActionListener{
 					if(m.getMap(x, y).equals("b")) {
 						g.drawImage(m.getBlank(), x*32, y*32, null);
 					}
+					if(m.getMap(x, y).equals("d")) {
+						g.drawImage(m.getDeco1(), x*32, y*32, null);
+					}
 				}
 			}
 			g.drawImage(p.getPlayer(), p.getTileX() * 32, p.getTileY() * 32, null);
@@ -80,25 +83,27 @@ public class Board extends JPanel implements ActionListener{
 	public class AL extends KeyAdapter {
 		public void keyPressed(KeyEvent e) {
 			int key = e.getKeyCode();
-
+			
+			String pattern = "[wbd]";
+			
 			if(!win) {
 				if((key == KeyEvent.VK_W || key == KeyEvent.VK_UP) && p.getTileY() != 0) {
-					if(!m.getMap(p.getTileX(), p.getTileY() - 1).matches("[wb]")) { // checks it against any/ all of the charasters in the []
+					if(!m.getMap(p.getTileX(), p.getTileY() - 1).matches(pattern)) { // checks it against any/ all of the charasters in the []
 						p.move(0, -1);
 					}
 				}
-				if((key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) && p.getTileY() != Maze.gridSize) {
-					if(!m.getMap(p.getTileX(), p.getTileY() + 1).matches("[wb]")) {				
+				if((key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) && p.getTileY() != Maze.gridSize-1) {
+					if(!m.getMap(p.getTileX(), p.getTileY() + 1).matches(pattern)) {				
 						p.move(0, 1);
 					}
 				}
 				if((key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) && p.getTileX() != 0) {
-					if(!m.getMap(p.getTileX() - 1, p.getTileY()).matches("[wb]")) {				
+					if(!m.getMap(p.getTileX() - 1, p.getTileY()).matches(pattern)) {				
 						p.move(-1, 0);
 					}
 				}
-				if((key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) && p.getTileX() != Maze.gridSize) {
-					if(!m.getMap(p.getTileX() + 1, p.getTileY()).matches("[wb]")) {
+				if((key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) && p.getTileX() != Maze.gridSize-1) {
+					if(!m.getMap(p.getTileX() + 1, p.getTileY()).matches(pattern)) {
 						p.move(1, 0);
 					}
 				}

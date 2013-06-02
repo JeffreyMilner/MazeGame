@@ -8,8 +8,8 @@ import javax.swing.*;
 public class SizeChooser extends JDialog {     
 
 	JPanel startWin; 	// Initialise the window      
-	JRadioButton size14, size20, size19, size27, none, size28;		// Initialize the radio buttons
-	JButton start;		// Initialize the start button
+	JRadioButton size14, size20, size19, size27, size28;	// Initialize the radio buttons
+	JButton start;	// Initialize the start button
 
 	public SizeChooser(){     
 
@@ -17,10 +17,9 @@ public class SizeChooser extends JDialog {
 		startWin.setLayout(new GridLayout(Maze.numOfSizes + 1,1));     
 		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		this.setVisible(true);
-		this.setTitle("Choose Your Class");
 
 		// Next five uncommented lines tell it to be centered on the screen, since this.setRelativeTo(null); 
-		// is really bad at that for these windows
+		// is really bad at that for these windows for whatever reason
 		Toolkit tk = Toolkit.getDefaultToolkit();
 		Dimension dim = tk.getScreenSize();
 		int xPos = (dim.width / 2) - (this.getWidth() / 2) - 100;
@@ -65,13 +64,6 @@ public class SizeChooser extends JDialog {
 		this.add(startWin);
 	}     
 
-
-	/**
-	 * A big if-else statement to get make the 
-	 * start button do whatever was selected
-	 * 
-	 * @param evt
-	 */
 	private void exitActionPerformed(java.awt.event.ActionEvent evt) {
 		if (size14.isSelected()) {
 			Maze.gridSize = 14;

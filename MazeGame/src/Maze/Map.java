@@ -11,7 +11,7 @@ public class Map {
 	private Scanner m;
 	private String Map[] = new String[Maze.gridSize];
 
-	private Image grass, finish, wall, start, blank;
+	private Image grass, finish, wall, start, blank, deco1;
 	
 	public Map() {
 		ImageIcon image;
@@ -32,6 +32,11 @@ public class Map {
 		image = new ImageIcon("res/wall.png");
 		wall = image.getImage();
 		
+		// Decoration (Solid)
+		image = new ImageIcon("res/deco1.png");
+		deco1 = image.getImage();
+		
+		
 		openFile();
 		readFile();
 		closeFile();
@@ -51,6 +56,9 @@ public class Map {
 	}
 	public Image getBlank() {
 		return blank;
+	}
+	public Image getDeco1() {
+		return deco1;
 	}
 	
 	public String getMap(int x, int y) {
