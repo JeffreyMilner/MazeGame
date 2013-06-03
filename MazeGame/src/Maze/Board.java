@@ -42,6 +42,8 @@ public class Board extends JPanel implements ActionListener{
 	public void paint(Graphics g) {
 		super.paint(g);
 
+		String decoPattern = "[12345]"; // All the decoration tiles easily sorted
+		
 		if(!win) {
 			for(int y = 0; y < Maze.gridSize; y++) {
 				for(int x = 0; x < Maze.gridSize; x++) {
@@ -65,8 +67,8 @@ public class Board extends JPanel implements ActionListener{
 					if(m.getMap(x, y).equals("b")) {
 						g.drawImage(m.getBlank(), x*32, y*32, null);
 					}
-					if(m.getMap(x, y).equals("d")) {
-						g.drawImage(m.getDeco1(), x*32, y*32, null);
+					if(m.getMap(x, y).matches(decoPattern)) {
+						g.drawImage(m.getDeco(m.getMap(x, y)), x*32, y*32, null);
 					}
 				}
 			}
@@ -84,7 +86,7 @@ public class Board extends JPanel implements ActionListener{
 		public void keyPressed(KeyEvent e) {
 			int key = e.getKeyCode();
 			
-			String pattern = "[wbd]";
+			String pattern = "[wb12345]";
 			
 			if(!win) {
 				if((key == KeyEvent.VK_W || key == KeyEvent.VK_UP) && p.getTileY() != 0) {

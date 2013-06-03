@@ -11,7 +11,7 @@ public class Map {
 	private Scanner m;
 	private static String Map[] = new String[MazeMaker.gridSize];
 
-	private Image grass, finish, wall, start, blank, deco1;
+	private Image grass, finish, wall, start, blank, deco1, deco2, deco3, deco4, deco5;
 	
 	public Map() {
 		ImageIcon image;
@@ -35,6 +35,14 @@ public class Map {
 		// Decoration (Solid)
 		image = new ImageIcon("res/deco1.png");
 		deco1 = image.getImage();
+		image = new ImageIcon("res/deco2.png");
+		deco2 = image.getImage();
+		image = new ImageIcon("res/deco3.png");
+		deco3 = image.getImage();
+		image = new ImageIcon("res/deco4.png");
+		deco4 = image.getImage();
+		image = new ImageIcon("res/deco5.png");
+		deco5 = image.getImage();
 		
 		openFile();
 		readFile();
@@ -56,8 +64,20 @@ public class Map {
 	public Image getBlank() {
 		return blank;
 	}
-	public Image getDeco1() {
-		return deco1;
+	public Image getDeco(String num) {
+		if(num.equals("1")) {
+			return deco1;
+		} else if(num.equals("2")) {
+			return deco2;
+		} else if(num.equals("3")) {
+			return deco3;
+		} else if(num.equals("4")) {
+			return deco4;
+		} else if(num.equals("5")) {
+			return deco5;
+		} else {
+			return blank;
+		}
 	}
 	
 	public String getMap(int x, int y) {
@@ -70,24 +90,7 @@ public class Map {
 		oldRow.setCharAt(x, tile);
 		Map[y] = oldRow.toString();
 	}
-	
-	public void openFile() {
-		try {
-			m = new Scanner(new File(MazeMaker.mapName));
-		} catch (FileNotFoundException e) {
-			System.out.println("Error loading map");
-			e.printStackTrace();
-		}
-	}
-	
-	public void readFile() {
-		while(m.hasNext()) {
-			for(int ix = 0; ix < MazeMaker.gridSize; ix++) {
-				Map[ix] = m.next();
-			}
-		}
-	}
-	
+
 	public static void newMap() {
 		Writer writer = null;
 
@@ -106,6 +109,23 @@ public class Map {
 				writer.close();
 			} catch (IOException e) {
 				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void openFile() {
+		try {
+			m = new Scanner(new File(MazeMaker.mapName));
+		} catch (FileNotFoundException e) {
+			System.out.println("Error loading map");
+			e.printStackTrace();
+		}
+	}
+	
+	public void readFile() {
+		while(m.hasNext()) {
+			for(int ix = 0; ix < MazeMaker.gridSize; ix++) {
+				Map[ix] = m.next();
 			}
 		}
 	}

@@ -26,12 +26,13 @@ public class MazeMaker {
 			sizeChecker();
 			chooser();
 		}
-		width = gridSize * 32 + 16; // Makes it so the tiles fit the best
-		height = gridSize * 32 + 38;
+		width = gridSize * 32 + 6; // Makes it so the tiles fit the best
+		height = gridSize * 32 + 28;
 		JFrame frame = new JFrame();
 		frame.setTitle("Maze Maker");
 		frame.add(new Board());
 		frame.setSize(new Dimension(width + 100, height));
+		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
