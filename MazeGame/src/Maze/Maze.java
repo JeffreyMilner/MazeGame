@@ -35,14 +35,6 @@ public class Maze {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-	public void sizeChecker() {
-		try {
-			gridSize = Integer.parseInt(JOptionPane.showInputDialog("Enter the number of rows/ columns there will be"));
-		} catch(Exception e) {
-			System.exit(0);
-		}
-	}
-	
 	public static void getRandMap() {
 		String path = mapDir; 
 
@@ -56,7 +48,7 @@ public class Maze {
 		int mapNum = getRandomNumberBetween(0, listOfFiles.length);		
 
 		try {
-		mapName = listOfFiles[mapNum].getPath();
+			mapName = listOfFiles[mapNum].getPath();
 		} catch(Exception e) {
 			System.out.println("mapName = " + mapName);
 		}
