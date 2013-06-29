@@ -2,6 +2,7 @@ package Maze;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.geom.Rectangle2D;
 
 import javax.swing.*;
 
@@ -12,14 +13,14 @@ public class Board extends JPanel implements ActionListener{
 
 	private Map m;
 	private Player p;
-	
+
 	public boolean win = false, winner = false, playerSet = false;
-	
-	private String endMessage = "", resetMessage = "Press (r) to restart";
+
+	private String endMessage = "You Won!", resetMessage = "Press (r) to restart";
 
 	private Font font1 = new Font("Serif", Font.BOLD, 48);
 	private Font font2 = new Font("Serif", Font.PLAIN, 15);
-	
+
 	public Board() {
 		m = new Map();
 		p = new Player();
@@ -34,7 +35,6 @@ public class Board extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if(m.getMap(p.getTileX(), p.getTileY()).equals("f") && !win) {
 			win = true;
-			endMessage = "You Win!";
 		}
 		repaint();
 	}
@@ -43,7 +43,7 @@ public class Board extends JPanel implements ActionListener{
 		super.paint(g);
 
 		String decoPattern = "[12345]"; // All the decoration tiles easily sorted
-		
+
 		if(!win) {
 			for(int y = 0; y < Maze.gridSize; y++) {
 				for(int x = 0; x < Maze.gridSize; x++) {
@@ -74,20 +74,28 @@ public class Board extends JPanel implements ActionListener{
 			}
 			g.drawImage(p.getPlayer(), p.getTileX() * 32, p.getTileY() * 32, null);
 		} else if(win) {
+			FontMetrics fm;
 			g.setColor(Color.red);
+			Rectangle2D rect;
+			
 			g.setFont(font1);
-			g.drawString(endMessage,   (Maze.width/2) - 110, (Maze.height/2)); // Extra stuff to center it
+			fm = g.getFontMetrics();
+			rect = fm.getStringBounds(endMessage, g);
+			g.drawString(endMessage, (int) (Maze.width/2 - rect.getWidth()/2), (int) (Maze.height/2 - rect.getHeight()/2));
+
 			g.setFont(font2);
-			g.drawString(resetMessage, (Maze.width/2) - 60, (Maze.height/2) + 20);
+			fm = g.getFontMetrics();
+			rect = fm.getStringBounds(resetMessage, g);
+			g.drawString(resetMessage, (int) (Maze.width/2 - rect.getWidth()/2), (int) (Maze.height/2 - rect.getHeight()/2 + 20));
 		}
 	}
 
 	public class AL extends KeyAdapter {
 		public void keyPressed(KeyEvent e) {
 			int key = e.getKeyCode();
-			
-			String pattern = "[wb12345]";
-			
+
+			String pattern = "[wb12345]"; // labels to collide with
+
 			if(!win) {
 				if((key == KeyEvent.VK_W || key == KeyEvent.VK_UP) && p.getTileY() != 0) {
 					if(!m.getMap(p.getTileX(), p.getTileY() - 1).matches(pattern)) { // checks it against any/ all of the charasters in the []
@@ -121,5 +129,5 @@ public class Board extends JPanel implements ActionListener{
 		public void keyReleased(KeyEvent e) { } 
 		public void keyTyped(KeyEvent e) { }
 	}
-	
+
 }
