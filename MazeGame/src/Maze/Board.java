@@ -11,7 +11,7 @@ public class Board extends JPanel implements ActionListener{
 
 	private Timer timer;
 
-	private Map m;
+	public static Map m;
 	private Player p;
 
 	public boolean win = false, winner = false, playerSet = false;
@@ -145,7 +145,8 @@ public class Board extends JPanel implements ActionListener{
 				if(key == KeyEvent.VK_N) {
 					win = false;
 					playerSet = false;
-//					Maze.getRandMap();
+					Maze.getRandMap();
+					Board.m = new Map();
 					repaint();
 				}
 				if(key == KeyEvent.VK_Q) {

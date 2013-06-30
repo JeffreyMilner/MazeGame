@@ -8,7 +8,8 @@ import javax.swing.*;
 
 public class Maze {
 	public static int gridSize;
-	public static String mapName = "", mapDir;
+	public static String mapName = ""; 
+	public static String mapDir  = "";
 	public static int width;
 	public static int height;
 	public static JFrame frame = new JFrame();
@@ -47,9 +48,11 @@ public class Maze {
 		}); 
 
 		int mapNum = getRandomNumberBetween(0, listOfFiles.length);		
+//		System.out.println("Maps: " + listOfFiles.length);
 
 		try {
 			mapName = listOfFiles[mapNum].getPath();
+			System.out.println("MapName: "+ mapName);
 		} catch(Exception e) {
 			System.out.println("mapName = " + mapName);
 		}
