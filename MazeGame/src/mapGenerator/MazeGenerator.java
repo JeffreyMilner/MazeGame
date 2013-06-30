@@ -10,8 +10,9 @@ import javax.swing.JPanel;
 
 
 public class MazeGenerator extends JPanel {
-
-    private Room[][] rooms;// m x n matrix of rooms
+	private static final long serialVersionUID = 1L;
+	
+	private Room[][] rooms;// m x n matrix of rooms
     private ArrayList<Wall> walls; // List of walls
     private Random rand;// for random wall
     private int height;// height of matrix
