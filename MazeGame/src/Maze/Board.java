@@ -16,7 +16,8 @@ public class Board extends JPanel implements ActionListener{
 
 	public boolean win = false, winner = false, playerSet = false;
 
-	private String endMessage = "You Won!", resetMessage = "Press (r) to restart", quitMessage = "Press (q) to quit";
+	private String endMessage = "You Won!", resetMessage = "Press (r) to restart";
+	private String quitMessage = "Press (q) to quit", newMessage = "Press (n) to start a new maze";
 
 	private Font font1 = new Font("Arial", Font.BOLD, 48);
 	private Font font2 = new Font("Arial", Font.PLAIN, 15);
@@ -90,8 +91,11 @@ public class Board extends JPanel implements ActionListener{
 			rect = fm.getStringBounds(resetMessage, g);
 			g.drawString(resetMessage, (int) (Maze.width/2 - rect.getWidth()/2), (int) (Maze.height/2 - rect.getHeight()/2 + 20));
 			
+			rect = fm.getStringBounds(newMessage, g);
+			g.drawString(newMessage, (int) (Maze.width/2 - rect.getWidth()/2), (int) (Maze.height/2 - rect.getHeight()/2 + 40));
+			
 			rect = fm.getStringBounds(quitMessage, g);
-			g.drawString(quitMessage, (int) (Maze.width/2 - rect.getWidth()/2), (int) (Maze.height/2 - rect.getHeight()/2 + 40));
+			g.drawString(quitMessage, (int) (Maze.width/2 - rect.getWidth()/2), (int) (Maze.height/2 - rect.getHeight()/2 + 60));
 		}
 	}
 
@@ -136,6 +140,12 @@ public class Board extends JPanel implements ActionListener{
 				if(key == KeyEvent.VK_R) {
 					win = false;
 					playerSet = false;
+					repaint();
+				}
+				if(key == KeyEvent.VK_N) {
+					win = false;
+					playerSet = false;
+//					Maze.getRandMap();
 					repaint();
 				}
 				if(key == KeyEvent.VK_Q) {

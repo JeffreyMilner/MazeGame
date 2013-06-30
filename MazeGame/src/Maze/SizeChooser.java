@@ -8,13 +8,14 @@ import javax.swing.*;
 public class SizeChooser extends JDialog {     
 
 	JPanel startWin; 	// Initialise the window      
-	JRadioButton size14, size20, size19, size27, size28;	// Initialize the radio buttons
+	JRadioButton size14, size19, size20, size21, size27, size28, size29;	// Initialize the radio buttons
 	JButton start;	// Initialize the start button
-
+	
+	public static int buttonNum;
+	
 	public SizeChooser(){     
 
 		startWin = new JPanel();     
-		startWin.setLayout(new GridLayout(Maze.numOfSizes + 1,1));     
 		this.setDefaultCloseOperation(HIDE_ON_CLOSE);
 		this.setVisible(true);
 
@@ -44,6 +45,10 @@ public class SizeChooser extends JDialog {
 		size20 = new JRadioButton("Map size of 20x20");
 		operation.add(size20);
 		startWin.add(size20);     
+		
+		size21 = new JRadioButton("Map size of 21x21");
+		operation.add(size21);
+		startWin.add(size21);
 
 		size27 = new JRadioButton("Map size of 27x27");
 		operation.add(size27);
@@ -52,6 +57,13 @@ public class SizeChooser extends JDialog {
 		size28 = new JRadioButton("Map size of 28x28");
 		operation.add(size28);
 		startWin.add(size28);
+		
+		size29 = new JRadioButton("Map size of 29x29");
+		operation.add(size29);
+		startWin.add(size29);
+		
+		
+		Maze.numOfSizes = operation.getButtonCount();
 		this.add(startWin);
 
 		start = new JButton("Start");
@@ -61,6 +73,11 @@ public class SizeChooser extends JDialog {
 				exitActionPerformed(evt);
 			}
 		});
+
+		buttonNum = operation.getButtonCount();
+		
+		startWin.setLayout(new GridLayout(buttonNum + 1,1));     
+		
 		this.add(startWin);
 	}     
 
@@ -77,12 +94,20 @@ public class SizeChooser extends JDialog {
 			Maze.gridSize = 20;
 			Maze.afterChoose();
 			this.dispose();
+		} else if(size21.isSelected()) {
+			Maze.gridSize = 21;
+			Maze.afterChoose();
+			this.dispose();
 		} else if (size27.isSelected()) {
 			Maze.gridSize = 27;
 			Maze.afterChoose();
 			this.dispose();
 		} else if(size28.isSelected()){
 			Maze.gridSize = 28;
+			Maze.afterChoose();
+			this.dispose();
+		} else if(size29.isSelected()){
+			Maze.gridSize = 29;
 			Maze.afterChoose();
 			this.dispose();
 		}

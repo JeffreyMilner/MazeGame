@@ -137,7 +137,8 @@ public class MazeGenerator extends JPanel {
         }// end of outer for loop
    }
    
-   public static void main(String[] args) {
+@SuppressWarnings("resource")
+public static void main(String[] args) {
         // we will use the scanner for userInput
         Scanner userInput = new Scanner(System.in);
         int m, n;// these are variables for the size of maze (m x n)

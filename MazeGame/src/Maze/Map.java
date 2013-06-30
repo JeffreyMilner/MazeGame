@@ -16,10 +16,6 @@ public class Map {
 	public Map() {
 		ImageIcon image;
 
-		// Blank
-		image = new ImageIcon("res/blank.png");
-		blank = image.getImage();
-		
 		// Walk-over-able
 		image = new ImageIcon("res/grass.png");
 		grass = image.getImage();
@@ -44,6 +40,9 @@ public class Map {
 		image = new ImageIcon("res/deco5.png");
 		deco5 = image.getImage();
 		
+		// Blank (Solid)
+		image = new ImageIcon("res/blank.png");
+		blank = image.getImage();
 		
 		openFile();
 		readFile();

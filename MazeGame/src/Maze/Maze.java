@@ -13,13 +13,13 @@ public class Maze {
 	public static int height;
 	public static JFrame frame = new JFrame();
 
-	public static int numOfSizes = 5;
+	public static int numOfSizes = 7;
 	
 	public Maze() {
 //		sizeChecker();
 //		chooser();
 		SizeChooser gui = new SizeChooser();
-		gui.pack();
+		gui.setSize(170, 25 * (SizeChooser.buttonNum + 1));
 	}
 	
 	public static void afterChoose() {
