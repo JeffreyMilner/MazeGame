@@ -10,6 +10,8 @@ public class Board extends JPanel implements ActionListener{
 
 	private Timer timer;
 	private Map m;
+	
+	private Font font1 = new Font("Arial", Font.PLAIN, 15);
 
 	public boolean win = false, winner = false, playerSet = false;
 
@@ -24,6 +26,8 @@ public class Board extends JPanel implements ActionListener{
 	private String deco3Button 	= "Deco1 (3)";
 	private String deco4Button 	= "Deco1 (4)";
 	private String deco5Button 	= "Deco1 (5)";
+	
+	public static String saveMessage = "", saveTime = "";
 	
 	public static boolean grass = true, wall = false, start = false, end = false, blank = false;
 	public static boolean deco1 = false, deco2 = false, deco3 = false, deco4 = false, deco5 = false;
@@ -46,19 +50,23 @@ public class Board extends JPanel implements ActionListener{
 		
 		int ix = 0;
 		
+		g.setFont(font1);
 		g.setColor(Color.black);
-		g.drawString(blankButton, MazeMaker.width + 5, ix += 25);
-		g.drawString(endButton,   MazeMaker.width + 5, ix += 25);
-		g.drawString(grassButton, MazeMaker.width + 5, ix += 25);
-		g.drawString(startButton, MazeMaker.width + 5, ix += 25);
-		g.drawString(wallButton,  MazeMaker.width + 5, ix += 25);
-		g.drawString(deco1Button, MazeMaker.width + 5, ix += 50);
-		g.drawString(deco2Button, MazeMaker.width + 5, ix += 25);
-		g.drawString(deco3Button, MazeMaker.width + 5, ix += 25);
-		g.drawString(deco4Button, MazeMaker.width + 5, ix += 25);
-		g.drawString(deco5Button, MazeMaker.width + 5, ix += 25);
+		g.drawString(blankButton, 	MazeMaker.width + 5, ix += 25);
+		g.drawString(endButton,   	MazeMaker.width + 5, ix += 25);
+		g.drawString(grassButton, 	MazeMaker.width + 5, ix += 25);
+		g.drawString(startButton, 	MazeMaker.width + 5, ix += 25);
+		g.drawString(wallButton,  	MazeMaker.width + 5, ix += 25);
+		g.drawString(deco1Button, 	MazeMaker.width + 5, ix += 50);
+		g.drawString(deco2Button, 	MazeMaker.width + 5, ix += 25);
+		g.drawString(deco3Button, 	MazeMaker.width + 5, ix += 25);
+		g.drawString(deco4Button, 	MazeMaker.width + 5, ix += 25);
+		g.drawString(deco5Button, 	MazeMaker.width + 5, ix += 25);
 		
-		g.drawString(saveButton,  MazeMaker.width + 5, ix += 50);
+		g.drawString(saveButton,  	MazeMaker.width + 5, ix += 50);
+		
+		g.drawString(saveMessage,  	MazeMaker.width + 5, ix += 50);
+		g.drawString(saveTime,  	MazeMaker.width + 5, ix += 20);
 
 		for(int y = 0; y < MazeMaker.gridSize; y++) {
 			for(int x = 0; x < MazeMaker.gridSize; x++) {

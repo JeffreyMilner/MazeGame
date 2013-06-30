@@ -16,10 +16,12 @@ public class Board extends JPanel implements ActionListener{
 
 	public boolean win = false, winner = false, playerSet = false;
 
-	private String endMessage = "You Won!", resetMessage = "Press (r) to restart";
+	private String endMessage = "You Won!", resetMessage = "Press (r) to restart", quitMessage = "Press (q) to quit";
 
-	private Font font1 = new Font("Serif", Font.BOLD, 48);
-	private Font font2 = new Font("Serif", Font.PLAIN, 15);
+	private Font font1 = new Font("Arial", Font.BOLD, 48);
+	private Font font2 = new Font("Arial", Font.PLAIN, 15);
+
+	public static int mapX = 0, mapY = 0;
 
 	public Board() {
 		m = new Map();
@@ -48,16 +50,16 @@ public class Board extends JPanel implements ActionListener{
 			for(int y = 0; y < Maze.gridSize; y++) {
 				for(int x = 0; x < Maze.gridSize; x++) {
 					if(m.getMap(x, y).equals("f")) {
-						g.drawImage(m.getFinish(), x*32, y*32, null);
+						g.drawImage(m.getFinish(), x*32 - mapX*32, y*32 - mapY*32, null);
 					}
 					if(m.getMap(x, y).equals("g")) {
-						g.drawImage(m.getGrass(), x*32, y*32, null);
+						g.drawImage(m.getGrass(),  x*32 - mapX*32, y*32 - mapY*32, null);
 					}
 					if(m.getMap(x, y).equals("w")) {
-						g.drawImage(m.getWall(), x*32, y*32, null);
+						g.drawImage(m.getWall(),   x*32 - mapX*32, y*32 - mapY*32, null);
 					}
 					if(m.getMap(x, y).equals("s")) {
-						g.drawImage(m.getStart(), x*32, y*32, null);
+						g.drawImage(m.getStart(),  x*32 - mapX*32, y*32 - mapY*32, null);
 						if(!playerSet) {
 							p.setTileX(x);
 							p.setTileY(y);
@@ -65,14 +67,14 @@ public class Board extends JPanel implements ActionListener{
 						}
 					}
 					if(m.getMap(x, y).equals("b")) {
-						g.drawImage(m.getBlank(), x*32, y*32, null);
+						g.drawImage(m.getBlank(), x*32 - mapX*32, y*32 - mapY*32, null);
 					}
 					if(m.getMap(x, y).matches(decoPattern)) {
-						g.drawImage(m.getDeco(m.getMap(x, y)), x*32, y*32, null);
+						g.drawImage(m.getDeco(m.getMap(x, y)), x*32 - mapX*32, y*32 - mapY*32, null);
 					}
 				}
 			}
-			g.drawImage(p.getPlayer(), p.getTileX() * 32, p.getTileY() * 32, null);
+			g.drawImage(p.getPlayer(), p.getTileX() * 32 - mapX*32, p.getTileY() * 32 - mapY*32, null);
 		} else if(win) {
 			FontMetrics fm;
 			g.setColor(Color.red);
@@ -87,6 +89,9 @@ public class Board extends JPanel implements ActionListener{
 			fm = g.getFontMetrics();
 			rect = fm.getStringBounds(resetMessage, g);
 			g.drawString(resetMessage, (int) (Maze.width/2 - rect.getWidth()/2), (int) (Maze.height/2 - rect.getHeight()/2 + 20));
+			
+			rect = fm.getStringBounds(quitMessage, g);
+			g.drawString(quitMessage, (int) (Maze.width/2 - rect.getWidth()/2), (int) (Maze.height/2 - rect.getHeight()/2 + 40));
 		}
 	}
 
@@ -99,12 +104,22 @@ public class Board extends JPanel implements ActionListener{
 			if(!win) {
 				if((key == KeyEvent.VK_W || key == KeyEvent.VK_UP) && p.getTileY() != 0) {
 					if(!m.getMap(p.getTileX(), p.getTileY() - 1).matches(pattern)) { // checks it against any/ all of the charasters in the []
-						p.move(0, -1);
+//						if(p.getTileY() >  2) {
+							p.move(0, -1);
+//						} else {
+//							Board.mapY--;
+//							p.move(0, -1);
+//						}
 					}
 				}
 				if((key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) && p.getTileY() != Maze.gridSize-1) {
 					if(!m.getMap(p.getTileX(), p.getTileY() + 1).matches(pattern)) {				
-						p.move(0, 1);
+//						if(p.getTileY() < Maze.gridSize - 2) {
+							p.move(0, 1);
+//						} else {
+//							Board.mapY++;
+//							p.move(0, 1);
+//						}
 					}
 				}
 				if((key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) && p.getTileX() != 0) {
@@ -122,6 +137,9 @@ public class Board extends JPanel implements ActionListener{
 					win = false;
 					playerSet = false;
 					repaint();
+				}
+				if(key == KeyEvent.VK_Q) {
+					System.exit(0);
 				}
 			}
 		}

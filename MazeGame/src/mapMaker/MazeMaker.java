@@ -10,6 +10,8 @@ public class MazeMaker {
 	public static String mapName = "";
 	public static int width, height;
 	public static int newMap;
+	public static int borderedMap;
+	public static boolean border = false;
 	
 	public MazeMaker() {
 		try {
@@ -17,8 +19,18 @@ public class MazeMaker {
 		} catch(Exception e) {
 			System.exit(0);
 		}
+	
+		
 		
 		if(newMap == JOptionPane.YES_OPTION) {
+			try {
+				borderedMap = JOptionPane.showConfirmDialog(null, "Do you want the new map to have a wall border?", "Border Map", JOptionPane.YES_NO_OPTION);
+			} catch(Exception e) {
+				System.exit(0);
+			}
+			if(borderedMap == JOptionPane.YES_OPTION) {
+				border = true;
+			} 
 			sizeChecker();
 			chooser();
 			Map.newMap();

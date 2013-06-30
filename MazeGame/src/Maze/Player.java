@@ -12,9 +12,6 @@ public class Player {
 	public Player() {
 		ImageIcon image = new ImageIcon("res//player.png");
 		player = image.getImage();
-		
-		tileX = 1;
-		tileY = 0;
 	}
 	
 	public Image getPlayer() {

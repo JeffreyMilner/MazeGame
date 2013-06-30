@@ -2,6 +2,7 @@ package mapMaker;
 
 import java.awt.*;
 import java.io.*;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import javax.swing.ImageIcon;
@@ -98,7 +99,11 @@ public class Map {
 		    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(MazeMaker.mapName), "utf-8"));
 		    for(int y = 0; y < MazeMaker.gridSize; y++) {
 				for(int x = 0; x < MazeMaker.gridSize; x++) {
-					writer.write("g");
+					if(MazeMaker.border == true && (y == 0 || y == MazeMaker.gridSize-1 || x == 0 || x == MazeMaker.gridSize-1)) {
+						writer.write("w");
+					} else {
+						writer.write("g");
+					}
 				}
 				writer.write("\n");
 		    }
@@ -143,6 +148,9 @@ public class Map {
 		} finally {
 			   try {
 				writer.close();
+				String timeStamp = new SimpleDateFormat("hh:mm:ss").format(Calendar.getInstance().getTime());
+				Board.saveMessage = "Saved as of:";
+				Board.saveTime = "  " + timeStamp;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
