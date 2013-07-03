@@ -33,28 +33,9 @@ public class Board extends JPanel implements ActionListener{
 	public void paint(Graphics g) {
 		super.paint(g);
 
-		String decoPattern = "[12345]"; // All the decoration tiles easily sorted
-		
 		for(int y = 0; y < MazeMaker.gridSize; y++) {
 			for(int x = 0; x < MazeMaker.gridSize; x++) {
-				if(m.getMap(x, y).equals("f")) {
-					g.drawImage(m.getFinish(), x*32 - xOffset*32, y*32 - yOffset*32, null);
-				}
-				if(m.getMap(x, y).equals("g")) {
-					g.drawImage(m.getGrass(), x*32 - xOffset*32, y*32 - yOffset*32, null);
-				}
-				if(m.getMap(x, y).equals("w")) {
-					g.drawImage(m.getWall(), x*32 - xOffset*32, y*32 - yOffset*32, null);
-				}
-				if(m.getMap(x, y).equals("s")) {
-					g.drawImage(m.getStart(), x*32 - xOffset*32, y*32 - yOffset*32, null);
-				}
-				if(m.getMap(x, y).equals("b")) {
-					g.drawImage(m.getBlank(), x*32 - xOffset*32, y*32 - yOffset*32, null);
-				}
-				if(m.getMap(x, y).matches(decoPattern)) {
-					g.drawImage(m.getDeco(m.getMap(x, y)), x*32 - xOffset*32, y*32 - yOffset*32, null);
-				}
+				g.drawImage(m.getImage(m.getMap(x, y)), x*32 - xOffset*32, y*32 - yOffset*32, null);
 			}
 		}
 		repaint();

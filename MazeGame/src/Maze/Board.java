@@ -22,7 +22,7 @@ public class Board extends JPanel implements ActionListener{
 	private Font font1 = new Font("Arial", Font.BOLD, 48);
 	private Font font2 = new Font("Arial", Font.PLAIN, 15);
 
-	public static int mapX = 0, mapY = 0;
+	public static int xOffset = 0, yOffset = 0;
 
 	public Board() {
 		m = new Map();
@@ -45,37 +45,29 @@ public class Board extends JPanel implements ActionListener{
 	public void paint(Graphics g) {
 		super.paint(g);
 
-		String decoPattern = "[12345]"; // All the decoration tiles easily sorted
-
 		if(!win) {
 			for(int y = 0; y < Maze.gridSize; y++) {
 				for(int x = 0; x < Maze.gridSize; x++) {
-					if(m.getMap(x, y).equals("f")) {
-						g.drawImage(m.getFinish(), x*32 - mapX*32, y*32 - mapY*32, null);
-					}
-					if(m.getMap(x, y).equals("g")) {
-						g.drawImage(m.getGrass(),  x*32 - mapX*32, y*32 - mapY*32, null);
-					}
-					if(m.getMap(x, y).equals("w")) {
-						g.drawImage(m.getWall(),   x*32 - mapX*32, y*32 - mapY*32, null);
-					}
-					if(m.getMap(x, y).equals("s")) {
-						g.drawImage(m.getStart(),  x*32 - mapX*32, y*32 - mapY*32, null);
-						if(!playerSet) {
-							p.setTileX(x);
-							p.setTileY(y);
-							playerSet = true;
+					String tile = m.getMap(x, y);
+					if(tile.equals("s") && !playerSet) { // Puts the player on the start tile at the beginning
+						if(x > Maze.gridSize - 10) {
+							xOffset = Maze.gridSize - 20;
+						} else if(x > 10) {
+							xOffset = x - 10;
 						}
+						if(y > Maze.gridSize - 10) {
+							yOffset = Maze.gridSize - 20;
+						} else if(y > 10) {
+							yOffset = y - 10;
+						}
+						p.setTileX(x);
+						p.setTileY(y);
+						playerSet = true;
 					}
-					if(m.getMap(x, y).equals("b")) {
-						g.drawImage(m.getBlank(), x*32 - mapX*32, y*32 - mapY*32, null);
-					}
-					if(m.getMap(x, y).matches(decoPattern)) {
-						g.drawImage(m.getDeco(m.getMap(x, y)), x*32 - mapX*32, y*32 - mapY*32, null);
-					}
+					g.drawImage(m.getImage(tile), x*32 - xOffset*32, y*32 - yOffset*32, null);
 				}
 			}
-			g.drawImage(p.getPlayer(), p.getTileX() * 32 - mapX*32, p.getTileY() * 32 - mapY*32, null);
+			g.drawImage(p.getPlayer(), p.getTileX() * 32 - xOffset*32, p.getTileY() * 32 - yOffset*32, null);
 		} else if(win) {
 			FontMetrics fm;
 			g.setColor(Color.red);
@@ -107,33 +99,44 @@ public class Board extends JPanel implements ActionListener{
 
 			if(!win) {
 				if((key == KeyEvent.VK_W || key == KeyEvent.VK_UP) && p.getTileY() != 0) {
-					if(!m.getMap(p.getTileX(), p.getTileY() - 1).matches(pattern)) { // checks it against any/ all of the charasters in the []
-//						if(p.getTileY() >  2) {
+					if(!m.getMap(p.getTileX(), p.getTileY() - 1).matches(pattern)) { // checks it against any/ all of the characters in the []
+						if(yOffset >  0 && p.getTileY() == yOffset + 10) {
+							Board.yOffset--;
 							p.move(0, -1);
-//						} else {
-//							Board.mapY--;
-//							p.move(0, -1);
-//						}
+						} else {
+							p.move(0, -1);
+						}
 					}
 				}
 				if((key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) && p.getTileY() != Maze.gridSize-1) {
 					if(!m.getMap(p.getTileX(), p.getTileY() + 1).matches(pattern)) {				
-//						if(p.getTileY() < Maze.gridSize - 2) {
+						if(yOffset < Maze.gridSize - 20 && p.getTileY() == yOffset + 10) {
+							Board.yOffset++;
 							p.move(0, 1);
-//						} else {
-//							Board.mapY++;
-//							p.move(0, 1);
-//						}
+						} else {
+							p.move(0, 1);
+						}
+
 					}
 				}
 				if((key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) && p.getTileX() != 0) {
 					if(!m.getMap(p.getTileX() - 1, p.getTileY()).matches(pattern)) {				
-						p.move(-1, 0);
+						if(xOffset > 0 && p.getTileX() == xOffset + 10) {
+							Board.xOffset--;
+							p.move(-1, 0);
+						} else {
+							p.move(-1, 0);
+						}
 					}
 				}
 				if((key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) && p.getTileX() != Maze.gridSize-1) {
 					if(!m.getMap(p.getTileX() + 1, p.getTileY()).matches(pattern)) {
-						p.move(1, 0);
+						if(xOffset < Maze.gridSize - 20 && p.getTileX() == xOffset + 10) {
+							Board.xOffset++;
+							p.move(1, 0);
+						} else {
+							p.move(1, 0);
+						}
 					}
 				}
 			} else if(win == true){

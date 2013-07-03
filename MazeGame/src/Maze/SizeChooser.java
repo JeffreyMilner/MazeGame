@@ -8,7 +8,7 @@ import javax.swing.*;
 public class SizeChooser extends JDialog {     
 
 	JPanel startWin; 	// Initialise the window      
-	JRadioButton size14, size19, size20, size21, size27, size28, size29;	// Initialize the radio buttons
+	JRadioButton size14, size19, size20, size21, size27, size28, size29, size30;	// Initialize the radio buttons
 	JButton start;	// Initialize the start button
 	
 	public static int buttonNum;
@@ -62,6 +62,10 @@ public class SizeChooser extends JDialog {
 		operation.add(size29);
 		startWin.add(size29);
 		
+		size30 = new JRadioButton("Map size of 30x30");
+		operation.add(size30);
+		startWin.add(size30);
+		
 		
 		Maze.numOfSizes = operation.getButtonCount();
 		this.add(startWin);
@@ -108,6 +112,10 @@ public class SizeChooser extends JDialog {
 			this.dispose();
 		} else if(size29.isSelected()){
 			Maze.gridSize = 29;
+			Maze.afterChoose();
+			this.dispose();
+		} else if(size30.isSelected()){
+			Maze.gridSize = 30;
 			Maze.afterChoose();
 			this.dispose();
 		}

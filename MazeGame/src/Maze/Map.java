@@ -49,31 +49,27 @@ public class Map {
 		closeFile();
 	}
 	
-	public Image getGrass() {
-		return grass;
-	}
-	public Image getWall() {
-		return wall;
-	}
-	public Image getFinish() {
-		return finish;
-	}
-	public Image getStart() {
-		return start;
-	}
-	public Image getBlank() {
-		return blank;
-	}
-	public Image getDeco(String num) {
-		if(num.equals("1")) {
+	
+	public Image getImage(String tile) {
+		if(tile.equals("g")) {
+			return grass;
+		} else if(tile.equals("w")) {
+			return wall;
+		} else if(tile.equals("f")) {
+			return finish;
+		} else if(tile.equals("s")) {
+			return start;
+		} else if(tile.equals("b")) {
+			return blank;
+		} else if(tile.equals("1")) {
 			return deco1;
-		} else if(num.equals("2")) {
+		} else if(tile.equals("2")) {
 			return deco2;
-		} else if(num.equals("3")) {
+		} else if(tile.equals("3")) {
 			return deco3;
-		} else if(num.equals("4")) {
+		} else if(tile.equals("4")) {
 			return deco4;
-		} else if(num.equals("5")) {
+		} else if(tile.equals("5")) {
 			return deco5;
 		} else {
 			return blank;
