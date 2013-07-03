@@ -26,10 +26,13 @@ public class Maze {
 	public static void afterChoose() {
 		mapDir = "maps/size" + gridSize;
 		getRandMap();
-//		width = gridSize * 32 + 6; // Makes it so the tiles fit the best
-//		height = gridSize * 32 + 28;
-		width = 20 * 32 + 6;
-		height = 20 * 32 + 28;
+		if (gridSize < 20) {
+			width = gridSize * 32 + 6;
+			height = gridSize * 32 + 28;
+		} else {
+			width = 20 * 32 + 6;
+			height = 20 * 32 + 28;
+		}
 		frame.setTitle("Maze Game");
 		frame.add(new Board());
 		frame.setSize(new Dimension(width, height));

@@ -50,15 +50,17 @@ public class Board extends JPanel implements ActionListener{
 				for(int x = 0; x < Maze.gridSize; x++) {
 					String tile = m.getMap(x, y);
 					if(tile.equals("s") && !playerSet) { // Puts the player on the start tile at the beginning
-						if(x > Maze.gridSize - 10) {
-							xOffset = Maze.gridSize - 20;
-						} else if(x > 10) {
-							xOffset = x - 10;
-						}
-						if(y > Maze.gridSize - 10) {
-							yOffset = Maze.gridSize - 20;
-						} else if(y > 10) {
-							yOffset = y - 10;
+						if(Maze.gridSize > 20) {
+							if(x > Maze.gridSize - 10) {
+								xOffset = Maze.gridSize - 20;
+							} else if(x > 10) {
+								xOffset = x - 10;
+							}
+							if(y > Maze.gridSize - 10) {
+								yOffset = Maze.gridSize - 20;
+							} else if(y > 10) {
+								yOffset = y - 10;
+							}
 						}
 						p.setTileX(x);
 						p.setTileY(y);
