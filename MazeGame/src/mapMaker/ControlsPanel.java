@@ -53,5 +53,6 @@ public class ControlsPanel extends JPanel {
 		g.drawString(saveMessage,  	5, ix += 50);
 		g.drawString(saveTime,  	5, ix += 20);
 
+		repaint();
 	}
 }
