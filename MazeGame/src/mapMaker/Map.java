@@ -148,9 +148,10 @@ public class Map {
 		} finally {
 			   try {
 				writer.close();
+				// Gives the timestamp to show on the window
 				String timeStamp = new SimpleDateFormat("hh:mm:ss").format(Calendar.getInstance().getTime());
-				Board.saveMessage = "Saved as of:";
-				Board.saveTime = "  " + timeStamp;
+				ControlsPanel.saveMessage = "Saved as of:";
+				ControlsPanel.saveTime = "  " + timeStamp;
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

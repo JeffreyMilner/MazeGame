@@ -11,30 +11,17 @@ public class Board extends JPanel implements ActionListener{
 	private Timer timer;
 	private Map m;
 	
-	private Font font1 = new Font("Arial", Font.PLAIN, 15);
-
-	public boolean win = false, winner = false, playerSet = false;
-
-	private String blankButton	= "Blank (b)";
-	private String endButton 	= "End (e)";
-	private String grassButton 	= "Grass (g)";
-	private String startButton	= "Start (s)";
-	private String wallButton 	= "Wall (w)";
-	private String saveButton 	= "Save (C-S)";
-	private String deco1Button 	= "Deco1 (1)";
-	private String deco2Button 	= "Deco1 (2)";
-	private String deco3Button 	= "Deco1 (3)";
-	private String deco4Button 	= "Deco1 (4)";
-	private String deco5Button 	= "Deco1 (5)";
-	
-	public static String saveMessage = "", saveTime = "";
-	
 	public static boolean grass = true, wall = false, start = false, end = false, blank = false;
 	public static boolean deco1 = false, deco2 = false, deco3 = false, deco4 = false, deco5 = false;
 
+	public static int xOffset = 0, yOffset = 0;
+	public static int height = 20 * 32;
+	public static int width = 20 * 32;
+	
 	public Board() {
 		m = new Map();
 
+		setPreferredSize(new Dimension(width, height));
 		setFocusable(true);
 		addKeyListener(new AL());
 		addMouseListener(new ML());
@@ -48,45 +35,25 @@ public class Board extends JPanel implements ActionListener{
 
 		String decoPattern = "[12345]"; // All the decoration tiles easily sorted
 		
-		int ix = 0;
-		
-		g.setFont(font1);
-		g.setColor(Color.black);
-		g.drawString(blankButton, 	MazeMaker.width + 5, ix += 25);
-		g.drawString(endButton,   	MazeMaker.width + 5, ix += 25);
-		g.drawString(grassButton, 	MazeMaker.width + 5, ix += 25);
-		g.drawString(startButton, 	MazeMaker.width + 5, ix += 25);
-		g.drawString(wallButton,  	MazeMaker.width + 5, ix += 25);
-		g.drawString(deco1Button, 	MazeMaker.width + 5, ix += 50);
-		g.drawString(deco2Button, 	MazeMaker.width + 5, ix += 25);
-		g.drawString(deco3Button, 	MazeMaker.width + 5, ix += 25);
-		g.drawString(deco4Button, 	MazeMaker.width + 5, ix += 25);
-		g.drawString(deco5Button, 	MazeMaker.width + 5, ix += 25);
-		
-		g.drawString(saveButton,  	MazeMaker.width + 5, ix += 50);
-		
-		g.drawString(saveMessage,  	MazeMaker.width + 5, ix += 50);
-		g.drawString(saveTime,  	MazeMaker.width + 5, ix += 20);
-
 		for(int y = 0; y < MazeMaker.gridSize; y++) {
 			for(int x = 0; x < MazeMaker.gridSize; x++) {
 				if(m.getMap(x, y).equals("f")) {
-					g.drawImage(m.getFinish(), x*32, y*32, null);
+					g.drawImage(m.getFinish(), x*32 - xOffset*32, y*32 - yOffset*32, null);
 				}
 				if(m.getMap(x, y).equals("g")) {
-					g.drawImage(m.getGrass(), x*32, y*32, null);
+					g.drawImage(m.getGrass(), x*32 - xOffset*32, y*32 - yOffset*32, null);
 				}
 				if(m.getMap(x, y).equals("w")) {
-					g.drawImage(m.getWall(), x*32, y*32, null);
+					g.drawImage(m.getWall(), x*32 - xOffset*32, y*32 - yOffset*32, null);
 				}
 				if(m.getMap(x, y).equals("s")) {
-					g.drawImage(m.getStart(), x*32, y*32, null);
+					g.drawImage(m.getStart(), x*32 - xOffset*32, y*32 - yOffset*32, null);
 				}
 				if(m.getMap(x, y).equals("b")) {
-					g.drawImage(m.getBlank(), x*32, y*32, null);
+					g.drawImage(m.getBlank(), x*32 - xOffset*32, y*32 - yOffset*32, null);
 				}
 				if(m.getMap(x, y).matches(decoPattern)) {
-					g.drawImage(m.getDeco(m.getMap(x, y)), x*32, y*32, null);
+					g.drawImage(m.getDeco(m.getMap(x, y)), x*32 - xOffset*32, y*32 - yOffset*32, null);
 				}
 			}
 		}
@@ -103,25 +70,25 @@ public class Board extends JPanel implements ActionListener{
 			int y = e.getY() / 32;
 
 			if(grass) {
-				m.setMap(x,  y,  'g');
+				m.setMap(x+xOffset,  y+yOffset,  'g');
 			} else if(wall) {
-				m.setMap(x,  y,  'w');
+				m.setMap(x+xOffset,  y+yOffset,  'w');
 			} else if(start) {
-				m.setMap(x,  y,  's');
+				m.setMap(x+xOffset,  y+yOffset,  's');
 			} else if(end) {
-				m.setMap(x,  y,  'f');
+				m.setMap(x+xOffset,  y+yOffset,  'f');
 			} else if(blank) {
-				m.setMap(x,  y,  'b');
+				m.setMap(x+xOffset,  y+yOffset,  'b');
 			} else if(deco1) {
-				m.setMap(x,  y,  '1');
+				m.setMap(x+xOffset,  y+yOffset,  '1');
 			} else if(deco2) {
-				m.setMap(x,  y,  '2');
+				m.setMap(x+xOffset,  y+yOffset,  '2');
 			} else if(deco3) {
-				m.setMap(x,  y,  '3');
+				m.setMap(x+xOffset,  y+yOffset,  '3');
 			} else if(deco4) {
-				m.setMap(x,  y,  '4');
+				m.setMap(x+xOffset,  y+yOffset,  '4');
 			} else if(deco5) {
-				m.setMap(x,  y,  '5');
+				m.setMap(x+xOffset,  y+yOffset,  '5');
 			}
 		} 
 	}
@@ -129,15 +96,19 @@ public class Board extends JPanel implements ActionListener{
 	public class AL extends KeyAdapter {
 		public void keyPressed(KeyEvent e) {
 			int key = e.getKeyCode();
-
-			if(e.isControlDown() && key == KeyEvent.VK_S) {
-				Map.writeToFile();
+			if(MazeMaker.gridSize > 20) {
+				if((key == KeyEvent.VK_UP) && yOffset > 0) 						{ yOffset--; }
+				if((key == KeyEvent.VK_DOWN) && yOffset < MazeMaker.gridSize-20) 	{ yOffset++; }
+				if((key == KeyEvent.VK_LEFT) && xOffset > 0) 					{ xOffset--; }
+				if((key == KeyEvent.VK_RIGHT)&& xOffset < MazeMaker.gridSize-20) 	{ xOffset++; }
 			}
+			if(e.isControlDown() && key == KeyEvent.VK_S) { Map.writeToFile(); }
+			
 			if(key == KeyEvent.VK_G) {
 				Board.grass = true;
-				Board.wall = false;
+				Board.wall  = false;
 				Board.start = false;
-				Board.end = false;
+				Board.end   = false;
 				Board.deco1 = false;
 				Board.deco2 = false;
 				Board.deco3 = false;
@@ -146,9 +117,9 @@ public class Board extends JPanel implements ActionListener{
 			}
 			if(key == KeyEvent.VK_W) {
 				Board.grass = false;
-				Board.wall = true;
+				Board.wall  = true;
 				Board.start = false;
-				Board.end = false;
+				Board.end   = false;
 				Board.deco1 = false;
 				Board.deco2 = false;
 				Board.deco3 = false;
@@ -157,9 +128,9 @@ public class Board extends JPanel implements ActionListener{
 			}
 			if(key == KeyEvent.VK_S) {
 				Board.grass = false;
-				Board.wall = false;
+				Board.wall  = false;
 				Board.start = true;
-				Board.end = false;
+				Board.end   = false;
 				Board.blank = false;
 				Board.deco1 = false;
 				Board.deco2 = false;
@@ -169,9 +140,9 @@ public class Board extends JPanel implements ActionListener{
 			}
 			if(key == KeyEvent.VK_E) {
 				Board.grass = false;
-				Board.wall = false;
+				Board.wall  = false;
 				Board.start = false;
-				Board.end = true;
+				Board.end   = true;
 				Board.blank = false;
 				Board.deco1 = false;
 				Board.deco2 = false;
@@ -181,9 +152,9 @@ public class Board extends JPanel implements ActionListener{
 			}
 			if(key == KeyEvent.VK_B) {
 				Board.grass = false;
-				Board.wall = false;
+				Board.wall  = false;
 				Board.start = false;
-				Board.end = false;
+				Board.end   = false;
 				Board.blank = true;
 				Board.deco1 = false;
 				Board.deco2 = false;
@@ -193,9 +164,9 @@ public class Board extends JPanel implements ActionListener{
 			}
 			if(key == KeyEvent.VK_1) {
 				Board.grass = false;
-				Board.wall = false;
+				Board.wall  = false;
 				Board.start = false;
-				Board.end = false;
+				Board.end   = false;
 				Board.blank = false;
 				Board.deco1 = true;
 				Board.deco2 = false;
@@ -205,9 +176,9 @@ public class Board extends JPanel implements ActionListener{
 			}
 			if(key == KeyEvent.VK_2) {
 				Board.grass = false;
-				Board.wall = false;
+				Board.wall  = false;
 				Board.start = false;
-				Board.end = false;
+				Board.end   = false;
 				Board.blank = false;
 				Board.deco1 = false;
 				Board.deco2 = true;
@@ -217,9 +188,9 @@ public class Board extends JPanel implements ActionListener{
 			}
 			if(key == KeyEvent.VK_3) {
 				Board.grass = false;
-				Board.wall = false;
+				Board.wall  = false;
 				Board.start = false;
-				Board.end = false;
+				Board.end   = false;
 				Board.blank = false;
 				Board.deco1 = false;
 				Board.deco2 = false;
@@ -229,9 +200,9 @@ public class Board extends JPanel implements ActionListener{
 			}
 			if(key == KeyEvent.VK_4) {
 				Board.grass = false;
-				Board.wall = false;
+				Board.wall  = false;
 				Board.start = false;
-				Board.end = false;
+				Board.end   = false;
 				Board.blank = false;
 				Board.deco1 = false;
 				Board.deco2 = false;
@@ -241,9 +212,9 @@ public class Board extends JPanel implements ActionListener{
 			}
 			if(key == KeyEvent.VK_5) {
 				Board.grass = false;
-				Board.wall = false;
+				Board.wall  = false;
 				Board.start = false;
-				Board.end = false;
+				Board.end   = false;
 				Board.blank = false;
 				Board.deco1 = false;
 				Board.deco2 = false;

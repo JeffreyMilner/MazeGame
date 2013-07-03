@@ -17,18 +17,20 @@ public class Player {
 	public Image getPlayer() {
 		return player;
 	}
+	public void setPlayer(Image player) {
+		this.player = player;
+	}
 	
 	public int getTileX() {
 		return tileX;
 	}
-	
 	public int getTileY() {
 		 return tileY;
 	}
+	
 	public void setTileX(int x) {
 		tileX = x;
 	}
-	
 	public void setTileY(int y) {
 		tileY = y;
 	}

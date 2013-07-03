@@ -1,6 +1,5 @@
 package mapMaker;
 
-import java.awt.*;
 import java.io.*;
 
 import javax.swing.*;
@@ -19,8 +18,6 @@ public class MazeMaker {
 		} catch(Exception e) {
 			System.exit(0);
 		}
-	
-		
 		
 		if(newMap == JOptionPane.YES_OPTION) {
 			try {
@@ -38,13 +35,21 @@ public class MazeMaker {
 			sizeChecker();
 			chooser();
 		}
-		width = gridSize * 32 + 6; // Makes it so the tiles fit the best
-		height = gridSize * 32 + 28;
+//		width = gridSize * 32 + 6; // Makes it so the tiles fit the best
+//		height = gridSize * 32 + 28;
+//		width = 22 * 32 + 6;
+//		height = 20 * 32 + 28;
 		JFrame frame = new JFrame();
+		JPanel panel = new JPanel();
 		frame.setTitle("Maze Maker");
-		frame.add(new Board());
-		frame.setSize(new Dimension(width + 100, height));
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		
+		panel.add(new Board());
+		panel.add(new ControlsPanel());
+
 		frame.setResizable(false);
+		frame.add(panel);
+		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
