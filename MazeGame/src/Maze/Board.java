@@ -14,7 +14,9 @@ public class Board extends JPanel implements ActionListener{
 	public static Map m;
 	private Player p;
 
-	public boolean win = false, winner = false, playerSet = false;
+	public static boolean win = false, winner = false, playerSet = false;
+
+	public static String pattern = "[wb12345]"; // labels to collide with
 
 	private String endMessage = "You Won!", resetMessage = "Press (r) to restart";
 	private String quitMessage = "Press (q) to quit", newMessage = "Press (n) to start a new maze";
@@ -28,11 +30,61 @@ public class Board extends JPanel implements ActionListener{
 		m = new Map();
 		p = new Player();
 
-		addKeyListener(new AL());
+		setPreferredSize(new Dimension(Maze.width, Maze.height));
 		setFocusable(true);
+		initKeys();
 
 		timer = new Timer(25, this);
 		timer.start();
+	}
+
+	public void initKeys() {
+		InputMap im = getInputMap(JPanel.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap am = getActionMap();
+
+		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "RightArrow");
+		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "LeftArrow");
+		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "UpArrow");
+		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "DownArrow");
+		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), "R");
+		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_N, 0), "N");
+		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_Q, 0), "Q");
+
+		am.put("RightArrow", new KeyAction("RightArrow"));
+		am.put("LeftArrow", new KeyAction("LeftArrow"));
+		am.put("UpArrow", new KeyAction("UpArrow"));
+		am.put("DownArrow", new KeyAction("DownArrow"));
+		am.put("R", new KeyAction("R"));
+		am.put("N", new KeyAction("N"));
+		am.put("Q", new KeyAction("Q"));
+	}
+	
+	public class KeyAction extends AbstractAction {
+		private static final long serialVersionUID = 1L;
+		
+		private String cmd;
+
+		public KeyAction(String cmd) {
+			this.cmd = cmd;
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			if (cmd.equalsIgnoreCase("LeftArrow")) {
+				moveLeft();
+			} else if (cmd.equalsIgnoreCase("RightArrow")) {
+				moveRight();
+			} else if (cmd.equalsIgnoreCase("UpArrow")) {
+				moveUp();
+			} else if (cmd.equalsIgnoreCase("DownArrow")) {
+				moveDown();
+			} else if (cmd.equalsIgnoreCase("R")) {
+				restart();
+			} else if (cmd.equalsIgnoreCase("N")) {
+				newMap();
+			} else if (cmd.equalsIgnoreCase("Q")) {
+				quit();
+			}
+		}
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -50,6 +102,9 @@ public class Board extends JPanel implements ActionListener{
 				for(int x = 0; x < Maze.gridSize; x++) {
 					String tile = m.getMap(x, y);
 					if(tile.equals("s") && !playerSet) { // Puts the player on the start tile at the beginning
+						p.setTileX(x);
+						p.setTileY(y);
+						playerSet = true;
 						if(Maze.gridSize > 20) {
 							if(x > Maze.gridSize - 10) {
 								xOffset = Maze.gridSize - 20;
@@ -62,9 +117,6 @@ public class Board extends JPanel implements ActionListener{
 								yOffset = y - 10;
 							}
 						}
-						p.setTileX(x);
-						p.setTileY(y);
-						playerSet = true;
 					}
 					g.drawImage(m.getImage(tile), x*32 - xOffset*32, y*32 - yOffset*32, null);
 				}
@@ -74,7 +126,7 @@ public class Board extends JPanel implements ActionListener{
 			FontMetrics fm;
 			g.setColor(Color.red);
 			Rectangle2D rect;
-			
+
 			g.setFont(font1);
 			fm = g.getFontMetrics();
 			rect = fm.getStringBounds(endMessage, g);
@@ -84,84 +136,82 @@ public class Board extends JPanel implements ActionListener{
 			fm = g.getFontMetrics();
 			rect = fm.getStringBounds(resetMessage, g);
 			g.drawString(resetMessage, (int) (Maze.width/2 - rect.getWidth()/2), (int) (Maze.height/2 - rect.getHeight()/2 + 20));
-			
+
 			rect = fm.getStringBounds(newMessage, g);
 			g.drawString(newMessage, (int) (Maze.width/2 - rect.getWidth()/2), (int) (Maze.height/2 - rect.getHeight()/2 + 40));
-			
+
 			rect = fm.getStringBounds(quitMessage, g);
 			g.drawString(quitMessage, (int) (Maze.width/2 - rect.getWidth()/2), (int) (Maze.height/2 - rect.getHeight()/2 + 60));
 		}
 	}
 
-	public class AL extends KeyAdapter {
-		public void keyPressed(KeyEvent e) {
-			int key = e.getKeyCode();
-
-			String pattern = "[wb12345]"; // labels to collide with
-
-			if(!win) {
-				if((key == KeyEvent.VK_W || key == KeyEvent.VK_UP) && p.getTileY() != 0) {
-					if(!m.getMap(p.getTileX(), p.getTileY() - 1).matches(pattern)) { // checks it against any/ all of the characters in the []
-						if(yOffset >  0 && p.getTileY() == yOffset + 10) {
-							Board.yOffset--;
-							p.move(0, -1);
-						} else {
-							p.move(0, -1);
-						}
-					}
-				}
-				if((key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) && p.getTileY() != Maze.gridSize-1) {
-					if(!m.getMap(p.getTileX(), p.getTileY() + 1).matches(pattern)) {				
-						if(yOffset < Maze.gridSize - 20 && p.getTileY() == yOffset + 10) {
-							Board.yOffset++;
-							p.move(0, 1);
-						} else {
-							p.move(0, 1);
-						}
-
-					}
-				}
-				if((key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) && p.getTileX() != 0) {
-					if(!m.getMap(p.getTileX() - 1, p.getTileY()).matches(pattern)) {				
-						if(xOffset > 0 && p.getTileX() == xOffset + 10) {
-							Board.xOffset--;
-							p.move(-1, 0);
-						} else {
-							p.move(-1, 0);
-						}
-					}
-				}
-				if((key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) && p.getTileX() != Maze.gridSize-1) {
-					if(!m.getMap(p.getTileX() + 1, p.getTileY()).matches(pattern)) {
-						if(xOffset < Maze.gridSize - 20 && p.getTileX() == xOffset + 10) {
-							Board.xOffset++;
-							p.move(1, 0);
-						} else {
-							p.move(1, 0);
-						}
-					}
-				}
-			} else if(win == true){
-				if(key == KeyEvent.VK_R) {
-					win = false;
-					playerSet = false;
-					repaint();
-				}
-				if(key == KeyEvent.VK_N) {
-					win = false;
-					playerSet = false;
-					Maze.getRandMap();
-					Board.m = new Map();
-					repaint();
-				}
-				if(key == KeyEvent.VK_Q) {
-					System.exit(0);
-				}
+	public void moveUp() {
+		if(!win && !m.getMap(p.getTileX(), p.getTileY() - 1).matches(pattern) && p.getTileY() != 0) { 
+			if(yOffset >  0 && p.getTileY() == yOffset + 10) {
+				Board.yOffset--;
+				p.move(0, -1);
+			} else {
+				p.move(0, -1);
 			}
 		}
-
-		public void keyReleased(KeyEvent e) { } 
-		public void keyTyped(KeyEvent e) { }
 	}
 
+	public void moveDown() {
+		if(!win && !m.getMap(p.getTileX(), p.getTileY() + 1).matches(pattern) && p.getTileY() != Maze.gridSize-1) {				
+			if(yOffset < Maze.gridSize - 20 && p.getTileY() == yOffset + 10) {
+				Board.yOffset++;
+				p.move(0, 1);
+			} else {
+				p.move(0, 1);
+			}
+		}
+	}
+
+	public void moveLeft() {
+		if(!win && !m.getMap(p.getTileX() - 1, p.getTileY()).matches(pattern) && p.getTileX() != 0) {				
+			if(xOffset > 0 && p.getTileX() == xOffset + 10) {
+				Board.xOffset--;
+				p.move(-1, 0);
+			} else {
+				p.move(-1, 0);
+			}
+		}
+	}
+
+	public void moveRight() {
+		if(!win && !m.getMap(p.getTileX() + 1, p.getTileY()).matches(pattern) && p.getTileX() != Maze.gridSize-1) {
+			if(xOffset < Maze.gridSize - 20 && p.getTileX() == xOffset + 10) {
+				Board.xOffset++;
+				p.move(1, 0);
+			} else {
+				p.move(1, 0);
+			}
+		}
+	}
+
+	public void restart() {
+		if(win) {
+			win = false;
+			playerSet = false;
+			repaint();
+		}
+	}
+	
+	public void newMap() {
+		if(win) {
+			win = false;
+			playerSet = false;
+			Maze.getRandMap();
+			Board.m = new Map();
+			repaint();
+		}
+	}
+	
+	public void quit() {
+		if(win) {
+			System.exit(0);
+		}
+	}
 }
+
+

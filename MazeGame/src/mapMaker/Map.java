@@ -15,11 +15,14 @@ public class Map {
 	private Image grass, finish, wall, start, blank, deco1, deco2, deco3, deco4, deco5;
 	
 	public Map() {
+		loadRes();
+		openFile();
+		readFile();
+		closeFile();
+	}
+	
+	public void loadRes() {
 		ImageIcon image;
-
-		// Blank
-		image = new ImageIcon("res/blank.png");
-		blank = image.getImage();
 
 		// Walk-over-able
 		image = new ImageIcon("res/grass.png");
@@ -28,7 +31,7 @@ public class Map {
 		finish = image.getImage();
 		image = new ImageIcon("res/start.png");
 		start = image.getImage();
-
+		
 		// Solid
 		image = new ImageIcon("res/wall.png");
 		wall = image.getImage();
@@ -45,11 +48,10 @@ public class Map {
 		image = new ImageIcon("res/deco5.png");
 		deco5 = image.getImage();
 		
-		openFile();
-		readFile();
-		closeFile();
+		// Blank (Solid)
+		image = new ImageIcon("res/blank.png");
+		blank = image.getImage();
 	}
-	
 	public Image getImage(String tile) {
 		if(tile.equals("g")) {
 			return grass;

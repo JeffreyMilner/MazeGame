@@ -1,4 +1,5 @@
 package Maze;
+import java.awt.CardLayout;
 import java.awt.Dimension;
 import java.io.File;
 import java.io.FilenameFilter;
@@ -7,42 +8,68 @@ import java.util.Random;
 import javax.swing.*;
 
 public class Maze {
-	public static int gridSize;
+	public static int gridSize = 20;
 	public static String mapName = ""; 
 	public static String mapDir  = "";
 	public static int width;
 	public static int height;
-	public static JFrame frame = new JFrame();
 
 	public static int numOfSizes = 7;
+	public static boolean First = true;
+	
+	private static CardLayout cl;
+	public static JFrame frame = new JFrame();
+	public static JPanel CardPanel = new JPanel();
+	
+	public static String BoardString = "Board";
+	public static String MainMenuString = "MainMenu";
+	public static String SizeMenuString = "SizeMenu";
 	
 	public Maze() {
-//		sizeChecker();
-//		chooser();
-		SizeChooser gui = new SizeChooser();
-		gui.setSize(170, 25 * (SizeChooser.buttonNum + 1));
+		width = 20 * 32;
+		height = 20 * 32 + 5;
+		
+		cl = new CardLayout(); 
+		CardPanel.setLayout(cl);
+		
+		CardPanel.add(new MainMenu(), MainMenuString);
+		CardPanel.add(new SizeMenu(), SizeMenuString);
+		
+		cl.show(CardPanel, MainMenuString);
+		
+		frame.setPreferredSize(new Dimension(width, height));
+		frame.setResizable(false);
+		frame.add(CardPanel);
+		frame.pack();
+		
+		frame.setTitle("Maze Game");
+
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 	
 	public static void afterChoose() {
 		mapDir = "maps/size" + gridSize;
 		getRandMap();
-		if (gridSize < 20) {
-			width = gridSize * 32 + 6;
-			height = gridSize * 32 + 28;
-		} else {
-			width = 20 * 32 + 6;
-			height = 20 * 32 + 28;
-		}
-		frame.setTitle("Maze Game");
-		frame.add(new Board());
-		frame.setSize(new Dimension(width, height));
-		frame.setResizable(false);
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	}
 
-	public static void getRandMap() {
+	public static void toMainMenu() {
+		cl.show(CardPanel, MainMenuString);
+	}
+	
+	public static void toSizeMenu() {
+		cl.show(CardPanel, SizeMenuString);
+	}
+	
+	public static void toBoard() {
+		JPanel B = new JPanel(); // Added later so that the map can be chosen before it tries to load
+		B.add(new Board());
+		CardPanel.add(B, BoardString);
+		cl.show(CardPanel, BoardString);
+	}
+	
+	public static int getRandMap() {
 		String path = mapDir; 
 
 		File directory = new File(path);
@@ -52,15 +79,22 @@ public class Maze {
 			}
 		}); 
 
-		int mapNum = getRandomNumberBetween(0, listOfFiles.length);		
-//		System.out.println("Maps: " + listOfFiles.length);
+		if(listOfFiles.length == 1 && !First) {
+			return 0; // the current map is the only one
+		} else {
+			int mapNum = getRandomNumberBetween(0, listOfFiles.length);		
+			System.out.println("Maps: " + listOfFiles.length);
 
-		try {
-			mapName = listOfFiles[mapNum].getPath();
-			System.out.println("MapName: "+ mapName);
-		} catch(Exception e) {
-			System.out.println("mapName = " + mapName);
+			try {
+				mapName = listOfFiles[mapNum].getPath();
+				System.out.println("MapName: " + mapName);
+				First = false;
+				return 1; // there is more than 1
+			} catch(Exception e) {
+				System.out.println("mapName = " + mapName);
+			}
 		}
+		return 0;
 	}
 	
 	public static int getRandomNumberBetween(int min, int max) {

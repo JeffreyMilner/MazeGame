@@ -35,10 +35,6 @@ public class MazeMaker {
 			sizeChecker();
 			chooser();
 		}
-//		width = gridSize * 32 + 6; // Makes it so the tiles fit the best
-//		height = gridSize * 32 + 28;
-//		width = 22 * 32 + 6;
-//		height = 20 * 32 + 28;
 		JFrame frame = new JFrame();
 		JPanel panel = new JPanel();
 		frame.setTitle("Maze Maker");
@@ -64,7 +60,7 @@ public class MazeMaker {
 	}
 	
 	public void chooser() {
-		JFileChooser fc = new JFileChooser("maps");
+		JFileChooser fc = new JFileChooser("maps/size" + gridSize);
 		fc.setFileSelectionMode(JFileChooser.FILES_ONLY);
 		int returnVal = fc.showOpenDialog(null); 
 

@@ -67,8 +67,7 @@ public class SizeChooser extends JDialog {
 		startWin.add(size30);
 		
 		
-		Maze.numOfSizes = operation.getButtonCount();
-		this.add(startWin);
+		OldMaze.numOfSizes = operation.getButtonCount();
 
 		start = new JButton("Start");
 		startWin.add(start);

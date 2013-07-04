@@ -14,6 +14,13 @@ public class Map {
 	private Image grass, finish, wall, start, blank, deco1, deco2, deco3, deco4, deco5;
 	
 	public Map() {
+		loadRes();
+		openFile();
+		readFile();
+		closeFile();
+	}
+	
+	public void loadRes() {
 		ImageIcon image;
 
 		// Walk-over-able
@@ -43,12 +50,7 @@ public class Map {
 		// Blank (Solid)
 		image = new ImageIcon("res/blank.png");
 		blank = image.getImage();
-		
-		openFile();
-		readFile();
-		closeFile();
 	}
-	
 	
 	public Image getImage(String tile) {
 		if(tile.equals("g")) {
@@ -86,7 +88,7 @@ public class Map {
 			m = new Scanner(new File(Maze.mapName));
 		} catch (FileNotFoundException e) {
 			System.out.println("Error loading map");
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 	
