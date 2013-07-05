@@ -18,7 +18,6 @@ public class MainMenu extends JPanel {
 		
 		StartGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				// Code to switch card here
 				Maze.toSizeMenu();
 			}
 		});

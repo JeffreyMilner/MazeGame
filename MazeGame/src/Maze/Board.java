@@ -14,7 +14,7 @@ public class Board extends JPanel implements ActionListener{
 	public static Map m;
 	private Player p;
 
-	public static boolean win = false, winner = false, playerSet = false;
+	public static boolean win = false, winner = false, playerSet = false, firstTimeThrough = true;
 
 	public static String pattern = "[wb12345]"; // labels to collide with
 
@@ -25,7 +25,9 @@ public class Board extends JPanel implements ActionListener{
 	private Font font2 = new Font("Arial", Font.PLAIN, 15);
 
 	public static int xOffset = 0, yOffset = 0;
-
+	public static int pStartX = 0, pStartY = 0, xOffStart = 0, yOffStart = 0; 
+	
+	
 	public Board() {
 		m = new Map();
 		p = new Player();
@@ -102,21 +104,7 @@ public class Board extends JPanel implements ActionListener{
 				for(int x = 0; x < Maze.gridSize; x++) {
 					String tile = m.getMap(x, y);
 					if(tile.equals("s") && !playerSet) { // Puts the player on the start tile at the beginning
-						p.setTileX(x);
-						p.setTileY(y);
-						playerSet = true;
-						if(Maze.gridSize > 20) {
-							if(x > Maze.gridSize - 10) {
-								xOffset = Maze.gridSize - 20;
-							} else if(x > 10) {
-								xOffset = x - 10;
-							}
-							if(y > Maze.gridSize - 10) {
-								yOffset = Maze.gridSize - 20;
-							} else if(y > 10) {
-								yOffset = y - 10;
-							}
-						}
+						setPlayer(x, y);
 					}
 					g.drawImage(m.getImage(tile), x*32 - xOffset*32, y*32 - yOffset*32, null);
 				}
@@ -145,6 +133,33 @@ public class Board extends JPanel implements ActionListener{
 		}
 	}
 
+	public void setPlayer(int x, int y) {
+		p.setTileX(x);
+		p.setTileY(y);
+		
+		playerSet = true;
+		
+		if(Maze.gridSize > 20) {
+			if(x > Maze.gridSize - 10) {
+				xOffset = Maze.gridSize - 20;
+			} else if(x > 10) {
+				xOffset = x - 10;
+			}
+			if(y > Maze.gridSize - 10) {
+				yOffset = Maze.gridSize - 20;
+			} else if(y > 10) {
+				yOffset = y - 10;
+			}
+			if (firstTimeThrough == true) {
+				pStartX = x;
+				pStartY = y;
+				xOffStart = xOffset;
+				yOffStart = yOffset;
+				firstTimeThrough = false;
+			}
+		}
+	}
+	
 	public void moveUp() {
 		if(!win && !m.getMap(p.getTileX(), p.getTileY() - 1).matches(pattern) && p.getTileY() != 0) { 
 			if(yOffset >  0 && p.getTileY() == yOffset + 10) {
@@ -201,8 +216,16 @@ public class Board extends JPanel implements ActionListener{
 		if(win) {
 			win = false;
 			playerSet = false;
-			Maze.getRandMap();
-			Board.m = new Map();
+			int num = Maze.getRandMap(); 
+			if(num > 1) { // Only looks for a new map if there is more than one of that size
+				Board.m = new Map();
+			} else if(num <= 1) {
+				xOffset = xOffStart;
+				yOffset = yOffStart;
+				
+				p.setTileX(pStartX);
+				p.setTileY(pStartY);
+			}
 			repaint();
 		}
 	}

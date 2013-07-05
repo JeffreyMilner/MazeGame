@@ -70,7 +70,7 @@ public class Maze {
 	}
 	
 	public static int getRandMap() {
-		String path = mapDir; 
+		String path = mapDir, oldMapName = mapName;
 
 		File directory = new File(path);
 		File[] listOfFiles = directory.listFiles(new FilenameFilter() {
@@ -79,19 +79,23 @@ public class Maze {
 			}
 		}); 
 
-		if(listOfFiles.length == 1 && !First) {
-			return 0; // the current map is the only one
-		} else {
-			int mapNum = getRandomNumberBetween(0, listOfFiles.length);		
-			System.out.println("Maps: " + listOfFiles.length);
+		while(mapName == oldMapName) {
+			if(listOfFiles.length == 1 && !First) {
+				return 1; // the current map is the only one
+			} else {
+				int mapNum = getRandomNumberBetween(0, listOfFiles.length);		
+				System.out.println("Maps: " + listOfFiles.length + ", MapNum = " + mapNum);
 
-			try {
 				mapName = listOfFiles[mapNum].getPath();
 				System.out.println("MapName: " + mapName);
-				First = false;
-				return 1; // there is more than 1
-			} catch(Exception e) {
-				System.out.println("mapName = " + mapName);
+				if(mapName.equals(oldMapName)) {
+					System.out.println("Continuing: Old: " + oldMapName + ", new: " + mapName);
+					continue;
+				} else {
+					System.out.println("Returning: Old: " + oldMapName + ", new: " + mapName);
+					First = true;
+					return 2; // there is more than 1
+				}
 			}
 		}
 		return 0;

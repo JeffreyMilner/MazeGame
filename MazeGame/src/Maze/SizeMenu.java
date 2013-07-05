@@ -1,15 +1,13 @@
 package Maze;
 
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
 public class SizeMenu extends JPanel {
 	private static final long serialVersionUID = 1L;
 
-	JRadioButton size14, size19, size20, size21, size27, size28, size29, size30;	// Initialize the radio buttons
+	JRadioButton size14, size15, size19, size20, size21, size27, size28, size29, size30;	// Initialize the radio buttons
 	JButton start;	// Initialize the start button
 	
 	public static int buttonNum;
@@ -27,6 +25,11 @@ public class SizeMenu extends JPanel {
 		add(size14);
 		size14.setSelected(true);
 
+		size15 = new JRadioButton("Map size of 15x15");
+		operation.add(size15);
+		add(size15);
+		size15.setSelected(true);
+		
 		size19 = new JRadioButton("Map size of 19x19");     
 		operation.add(size19);
 		add(size19);  
@@ -55,8 +58,7 @@ public class SizeMenu extends JPanel {
 		operation.add(size30);
 		add(size30);
 		
-		
-		OldMaze.numOfSizes = operation.getButtonCount();
+		Maze.numOfSizes = operation.getButtonCount();
 
 		start = new JButton("Start");
 		add(start);
@@ -75,6 +77,9 @@ public class SizeMenu extends JPanel {
 	private void start() {
 		if (size14.isSelected()) {
 			Maze.gridSize = 14;
+			Maze.afterChoose();
+		} else if(size15.isSelected()) {
+			Maze.gridSize = 15	;
 			Maze.afterChoose();
 		} else if(size19.isSelected()) {
 			Maze.gridSize = 19;
